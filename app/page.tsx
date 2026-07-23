@@ -1,6 +1,10 @@
 import { selectEmployee } from './actions';
 import { supabaseAdmin } from '@/lib/supabase/server';
 
+// Employee availability changes in Supabase must be reflected on every kiosk visit.
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 type HomeProps = { searchParams: Promise<{ message?: string }> };
 
 export default async function Home({ searchParams }: HomeProps) {
