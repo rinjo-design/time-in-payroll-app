@@ -1,0 +1,2 @@
+import {z} from 'zod';
+export const employeeSelectionSchema=z.object({employeeId:z.string().uuid()}); export const pinSchema=z.object({pin:z.string().regex(/^\d{4,8}$/,'Use a 4–8 digit PIN')}); export const employeeSchema=z.object({displayName:z.string().trim().min(2).max(100),employeeCode:z.string().trim().min(1).max(32)}); export const attendanceEditSchema=z.object({clockInAt:z.string().datetime(),clockOutAt:z.string().datetime().optional(),reason:z.string().trim().min(5).max(500)});
