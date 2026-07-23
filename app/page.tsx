@@ -10,6 +10,7 @@ type HomeProps = { searchParams: Promise<{ message?: string }> };
 export default async function Home({ searchParams }: HomeProps) {
   const { message } = await searchParams;
   let employees: { id: string; display_name: string; employee_code: string }[] = [];
+  let employeeDirectoryUnavailable = false;
 
   try {
     const result = await supabaseAdmin()
@@ -19,7 +20,8 @@ export default async function Home({ searchParams }: HomeProps) {
       .order('display_name');
     employees = result.data ?? [];
   } catch {
-    // Keep the kiosk page available if its server-side database configuration is incomplete.
+    // Keep the kiosk page available without exposing server configuration details.
+    employeeDirectoryUnavailable = true;
   }
 
   return <section className="mx-auto max-w-xl space-y-6">
@@ -36,7 +38,9 @@ export default async function Home({ searchParams }: HomeProps) {
         {employees.map((employee) => <option key={employee.id} value={employee.id}>{employee.display_name} ({employee.employee_code})</option>)}
       </select>
       <button className="w-full min-h-14" type="submit">Continue to time clock</button>
-      {!employees.length && <p className="text-sm text-slate-500">No active employees are available. An administrator can add one.</p>}
+      {employeeDirectoryUnavailable ? (
+        <p className="text-sm text-amber-800" role="alert">The employee directory is temporarily unavailable. Check the server&apos;s Supabase configuration and redeploy.</p>
+      ) : !employees.length && <p className="text-sm text-slate-500">No active employees are available. An administrator can add one.</p>}
     </form>
   </section>;
 }
