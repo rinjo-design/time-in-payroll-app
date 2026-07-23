@@ -1,0 +1,1 @@
+import {requireAdmin} from '@/lib/auth/sessions'; export default async function PayrollPeriod({params}:{params:Promise<{periodId:string}>}){await requireAdmin();const {periodId}=await params;return <section><h1 className="text-3xl font-bold">Payroll period</h1><p className="mt-2">Period ID: {periodId}</p></section>}
